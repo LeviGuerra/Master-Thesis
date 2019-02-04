@@ -25,4 +25,4 @@ For any suggestion regarding my master thesis, or for a collaboration proposal, 
 
 ------
 
-*Note: I am working to present the content as clear as possible. However, due to the background needed and the highly specific content, the code might be quite tough to fully understand without being familiar with the thesis. If the abstract is not clear enough, please, check the thesis itself for further details (link above) or contact me; I will be glad to help you!
+*Note: I am working to present the content as clear as possible. However, due to the background needed and the highly specific content, the code might be quite tough to fully understand without being familiar with the thesis. If the abstract is not clear enough, please, check the thesis itself for further details (link above) or contact me; I will be glad to help you!*
