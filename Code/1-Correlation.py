@@ -6,7 +6,6 @@ Created on Tue Jul 25 12:12:50 2017
 """
 
 get_ipython().magic('matplotlib inline')
-
 import random
 from numpy import *
 from math import *
@@ -16,7 +15,6 @@ import math
 import numpy as np
 import scipy 
 import scipy.ndimage
-
 import matplotlib.pyplot as plt
 from matplotlib import pyplot
 import seaborn as sns; sns.set(color_codes=True)
@@ -24,9 +22,16 @@ sns.set_style("white")
 #sns.set_style("whitegrid")
 
 
+# In this first python code behind my master thesis we will calculate the correlation between two Place Cells.
+# The analytical result is compared to numerical simulations of an animal walking rightwards on a linear track. 
+# The code can be divided in three parts:
+# 1. The different variables and parameters needed are defined
+# 2. Different functions with self-explanatory names are presented. They are intermediate steps, plots... that help to understand the results.
+# 3. The plot of the Correlation Average comparison is included.
+
+
 class Correlation:    
-    
-    
+        
     def __init__(self,T,L):
         
         self.Speed=25                                   # Speed of the rat inside the maze (cm/s)
@@ -61,7 +66,7 @@ class Correlation:
         Time=0
         XX=[]
         
-        while abs(Time-(self.Time))>(self.dt)**2:               # When time of simulation reaches desired time, with a difference much smaller than dt, finish simulation.
+        while abs(Time-(self.Time))>(self.dt)**2:       # When time of simulation reaches desired time, with a difference much smaller than dt, finish simulation.
             
             if Time==0:
                 X=-self.Length/2                                # Starting point
@@ -93,7 +98,6 @@ class Correlation:
         self.ThetaGenerator2=[(x+PhaseDiffFields) for x in ThetaList]
 
 
-
 ################################################################################################################################################################
 ################################################################################################################################################################
 ################################################################################################################################################################
@@ -102,7 +106,7 @@ class Correlation:
     def PathSize(self):                                 # Gives back the Path Size in number of Steps dt
         print(self.Path)
         print(size(self.Path))
-     
+        
     
     def Spikes(self,Sigma,Peak,Center,Omega,DeltaOmega,PhiTheta):
         
@@ -148,8 +152,9 @@ class Correlation:
         i=0
         return SpikeIndex
 
-        
-    def RandomDist(self):                   #Plots an histogram of a certain number of the random numbers used to generate the Spikes
+
+    #Plots an histogram of a certain number of the random numbers used to generate the Spikes    
+    def RandomDist(self):                   
         k = [-log(1-np.random.rand()) for i in arange(0,10000)]
 
         bins = numpy.linspace(0,20, 10000)
@@ -159,9 +164,9 @@ class Correlation:
         pyplot.show()
         print('Here we see a certain histogram for the random numbers used to generate the Spikes')
         
+        
     def ThetaDist(self):                        #Plots the real distribution of initial theta values each time the run is restarted. 
-                                                #The value at the place field entry is just a fixed phase difference. We use this to justify why we generate random thetas in the Spike generator.    
-                                                
+                                                #The value at the place field entry is just a fixed phase difference. We use this to justify why we generate random thetas in the Spike generator.                                       
         T=self.Time                             # Minutes running
         Runs=T*self.Speed/(self.Length)         # Number of runs
         RunTime=self.Length/(self.Speed)        # Time spent on a single run
@@ -232,7 +237,6 @@ class Correlation:
         plt.xlim(-L/2-L/16,L/2+L/16)   
         plt.ylim((-L/2-L/16)*2/3,(L/2+L/16)*2/3)
         
-        
         ########### We add an histogram here too ###########
         
         i=0
@@ -259,13 +263,6 @@ class Correlation:
         plt.ylabel('Number of Spikes per bin', fontsize=30)
         pyplot.show()
         
-                
-        #plt.title('Place Fields Pair Correlation', fontsize=20)
-        
-        
-        
- 
-    
         #In the following, what we do is to take the two lists of generated spikes and calculate the size of the
         #intersections between them for different time-lag values. What this does, is to give the correlation
         #for different time lags, since if we add +1 to every element in the list SpikeIndexA, we are
@@ -383,16 +380,6 @@ class Correlation:
         
         print(' ')
         print('The analytical firing rate average is:', str(mean(ExactCorrR)), 'The simulated firing rate average is', str(mean(Corr)),'.',' The corresponding ratio is:',str(mean(ExactCorrR)/mean(Corr)))
-
-        #Leftward directed runs - we don't have to change sign of v, because this is included already in the analytical expression 
-        #Exact1DLeft = lambda x: Coeff(0,x,pi)*(1+.5*exp(-(s**2)*(Dw)**2/(4*(self.Speed)**2))
-        #*cos(wbar*x+(wi+wj)/(2*self.OmegaTheta)*(self.OmegaTheta/self.Speed*(diL(0,pi)-djL(0,pi))+(-self.OmegaTheta/self.Speed*(diL(0,pi)-djL(0,pi)))%(2*pi))+Dw/(2*self.Speed)*(diL(0,pi)+djL(0,pi))-pi*Dw/self.OmegaTheta)
-        #  +((self.OmegaTheta*(diL(0,pi)-djL(0,pi))/self.Speed)%(2*pi))/pi*sin(pi*wi/self.OmegaTheta)*sin(wbar*x+(wi+wj)/(2*self.OmegaTheta)*(self.OmegaTheta/self.Speed*(diL(0,pi)-djL(0,pi))+(-self.OmegaTheta/self.Speed*(diL(0,pi)-djL(0,pi)))%(2*pi))+Dw/(2*self.Speed)*(diL(0,pi)+djL(0,pi))-pi*Dw/self.OmegaTheta-pi*wi/self.OmegaTheta))
-        #ExactCorrL=[Exact1DLeft(x) for x in arange(-LagRadius/1000,LagRadius/1000 +.001,.001)]
-        #plt.plot(arange(-LagRadius,LagRadius+1),array(ExactCorrL),lw=1)
-        #Here we add the sum of the left+right correlations, if we were interested in back-and-forth trajectories (not only leftwards or rightwards)
-        #ExactCorr=[sum(x) for x in zip(ExactCorrL, ExactCorrR)]
-        #plt.plot(arange(-LagRadius,LagRadius+1),array(ExactCorr),lw=5,c=sns.xkcd_rgb["amber"])
         
         plt.show()
         
@@ -400,219 +387,4 @@ class Correlation:
 ################################################################################################################################################################
 ################################################################################################################################################################    
     
-    
-    def SimpCorrelationAvg(self):                 #Exact Correlation Function Averaging for all onset PhiTheta
-        
-        Lag=self.LagRadius
-        dt=self.dt
-
-        ########## ANALYTICAL CORRELATION ##########      
-
-        si=self.si
-        sj=self.sj
-        Pi=self.Pi
-        Pj=self.Pj        
-
-        s=sqrt(2*(si**2*sj**2)/(si**2+sj**2))
-        sbar=sqrt((si**2+sj**2)/2)
-        sbari=sqrt(si**2/(si**2+sj**2))
-        sbarj=sqrt(sj**2/(si**2+sj**2))
-        wtheta=self.OmegaTheta
-        wi=self.Omegai                        
-        wj=self.Omegaj                        
-        wbar=sbari**2*wi+sbarj**2*wj
-        Dw=wi-wj                              #Difference between wi and wj
-
-        Ri=self.Ri                            
-        Rj=self.Rj                            
-        
-        v=self.Speed
-        r=self.Distance
-        
-        diR = lambda x_c,gamma: sqrt(Ri**2 - (x_c - sbari**2*r*sin(gamma))**2 ) + sbari**2*r*cos(gamma)
-        djR = lambda x_c,gamma: sqrt(Rj**2 - (x_c + sbarj**2*r*sin(gamma))**2 ) - sbarj**2*r*cos(gamma)
-        #diL = lambda x_c,gamma: sqrt(Ri**2 - (x_c + sbari**2*r*sin(gamma))**2 ) + sbari**2*r*cos(gamma)
-        #djL = lambda x_c,gamma: sqrt(Rj**2 - (x_c - sbarj**2*r*sin(gamma))**2 ) - sbarj**2*r*cos(gamma)
-    
-        Coeff = lambda x_c,x,gamma : sqrt(pi)*s/(4*v)*Pi*Pj*exp(-x_c**2/(s**2))*exp(-v**2*x**2/(4*sbar**2))*exp(-r**2/(4*sbar**2))*exp(-v*r*x*cos(gamma)/(2*sbar**2))
-        
-        Exact1DRight = lambda x: Coeff(0,x,0)*(1+.5*exp(-(s**2)*(Dw)**2/(4*v**2))
-        *(cos(wbar*x+(wi+wj)/(2*wtheta)*(wtheta/v*(diR(0,0)-djR(0,0))-(wtheta/v*(diR(0,0)-djR(0,0)))%(2*pi))+Dw/(2*v)*(diR(0,0)+djR(0,0))-pi*Dw/wtheta)
-          -((wtheta*(diR(0,0)-djR(0,0))/self.Speed)%(2*pi))/pi*sin(pi*wj/wtheta)*sin(wbar*x+(wi+wj)/(2*wtheta)*(wtheta/v*(diR(0,0)-djR(0,0))-(wtheta/v*(diR(0,0)-djR(0,0)))%(2*pi))+Dw/(2*v)*(diR(0,0)+djR(0,0))-pi*Dw/wtheta+pi*wj/wtheta)))
-        
-        ExactCorrR=[Exact1DRight(x) for x in arange(-Lag,Lag+dt,dt)]                                    #List of points between -+Lag with spacing dt
-        
-        plt.figure(figsize=(15,10))
-        plt.plot(arange(-Lag,Lag+dt,dt),ExactCorrR,lw=2,c=sns.xkcd_rgb["amber"],zorder=2)       
-        
-        ########## SIMULATED CORRELATION ##########
-        
-        #For simulated correlation, it is necessary to work with integrers; hence, we change time units so dt is integrer, and then return to seconds at the end:
-        def number_of_decimals(x):  
-            count = 0  
-            residue = x -int(x)  
-            if residue != 0:  
-                multiplier = 1  
-                while not (x*multiplier).is_integer():  
-                    count += 1  
-                    multiplier = 10 * multiplier  
-                return count
-        k=number_of_decimals(dt)
-    
-        Lag=Lag*(10**k)
-        dt=dt*(10**k)      
-        
-        
-        SpikeIndex1=self.SpikeIndex1()
-        SpikeIndex2=self.SpikeIndex2()
-        
-        print(' ')        
-        print('Number of steps is:', size(self.Path))
-        print(' ')
-        print('The distance between place fields centers is:', str(self.Distance))
-        print('Number of Spikes from cell 1 with radius', str(self.Ri),'and frequency', str(self.Omegai), 'is', size(SpikeIndex1))
-        print('Number of Spikes from cell 2 with radius', str(self.Rj),'and frequency', str(self.Omegaj),'is', size(SpikeIndex2))
-        print('Value of sigma 1 is', str(self.si))
-        print('Value of sigma 2 is', str(self.sj))
-        
-        #Normalization
-        NumberRuns=(self.Length/(self.Speed*self.Time))
-        N=NumberRuns/(self.dt)                # Normalization of the correlation
-        
-        #Correlation and plot
-        Corr=[size(list(set(SpikeIndex1).intersection(SpikeIndex2+i)))*N for i in arange(-Lag/dt,(Lag+dt)/dt,1)]        #Calculate Correlation by counting coincidences. The interval is -+Lag/dt because we add time steps, not time directly.
-        CorrConv=scipy.ndimage.gaussian_filter(Corr, sigma=1)           #Smoothed simulated correlation
-        plt.plot(arange(-Lag/10**k,(Lag+dt)/10**k,dt/10**k),CorrConv,c=sns.xkcd_rgb["taupe"],zorder=1)                              #Plot the correlation. For that we have to consider that now the interval length is 2*Lag+dt, and we had (2*Lag+dt)/dt legth with spacing dt. So, by cross multiplication, the new spacing is dt' = dt*(2*Lag+dt)/((2*Lag+dt)/dt) = dt*dt
-        
-        plt.plot(arange(-round(Lag/dt)*dt/10**k,round((Lag+dt)/dt)*dt/10**k,dt/10**k),CorrConv,c=sns.xkcd_rgb["taupe"],zorder=1)                              #Plot the correlation. For that we have to consider that now the interval length is 2*Lag+dt, and we had (2*Lag+dt)/dt legth with spacing dt. So, by cross multiplication, the new spacing is dt' = dt*(2*Lag+dt)/((2*Lag+dt)/dt) = dt*dt
-
-        # IMPORTANT REMARK 1: Why do we make the plot with steps dt**2?
-        # We are plotting between -Lag and +Lag. But we add steps, not time, so  interval is given between -Lag/dt and +Lag/t (in steps of 1, because each time step is already dt in time)
-        # When we plot, we plot in time, so the interval is -Lag to +Lag in steps dt.        
-        #
-        # IMPORTANT REMARK 2: Why do we use round and int?
-        # Recall that we have an arange with limits Lag/dt. We need integrer numbers, and this can be float.
-        # Hence, we apply round to make it integrer. But, we can have the problem that 
-        
-        print(' ')
-        print('The analytical firing rate average is:', str(mean(ExactCorrR)), 'The simulated firing rate average is', str(mean(Corr)),'.',' The corresponding ratio is:',str(mean(ExactCorrR)/mean(Corr)))
-
-    
-    
-    
-    
-################################################################################################################################################################
-################################################################################################################################################################
-################################################################################################################################################################
-       
-
-        
-    def CorrelationNotAvg(self):      #Exact Correlation Function NOT Averaging for all onset Omega_Theta, using simply initial PhiTheta = 0
-        
-        Lag=self.LagRadius
-        dt=self.dt
-          
-        ########## ANALYTICAL CORRELATION ##########      
-        
-        si=self.si
-        sj=self.sj
-        Pi=self.Pi
-        Pj=self.Pj        
-        
-        s=sqrt(2*(si**2*sj**2)/(si**2+sj**2))
-        sbar=sqrt((si**2+sj**2)/2)
-        sbari=sqrt(si**2/(si**2+sj**2))
-        sbarj=sqrt(sj**2/(si**2+sj**2))
-        wtheta=self.OmegaTheta
-        wi=self.Omegai                        #The cell frequencies wi and wj are identical, however,
-        wj=self.Omegaj                        #in this expression they are distinguished, for future changes
-        wbar=sbari**2*wi+sbarj**2*wj
-        Dw=wi-wj                              #Difference between wi and wj
-        
-        Ri=self.Ri                            #gamma=Xc=0. 
-        Rj=self.Rj                            #The radius will be identical since the frequencies of the two cells are identical
-        
-        speed=self.Speed
-        r=self.Distance
-        
-        diR = lambda x_c,gamma: sqrt(Ri**2 - (x_c - sbari**2*r*sin(gamma))**2 ) + sbari**2*r*cos(gamma)
-        djR = lambda x_c,gamma: sqrt(Rj**2 - (x_c + sbarj**2*r*sin(gamma))**2 ) - sbarj**2*r*cos(gamma)
-        #diL = lambda x_c,gamma: sqrt(Ri**2 - (x_c + sbari**2*r*sin(gamma))**2 ) + sbari**2*r*cos(gamma)
-        #djL = lambda x_c,gamma: sqrt(Rj**2 - (x_c - sbarj**2*r*sin(gamma))**2 ) - sbarj**2*r*cos(gamma)
-    
-        PhiTheta=0
-        
-        Coeff = lambda x_c,x,gamma : sqrt(pi)*s/(4*self.Speed)*Pi*Pj*exp(-x_c**2/(s**2))*exp(-self.Speed**2*x**2/(4*sbar**2))*exp(-self.Distance**2/(4*sbar**2))*exp(-self.Speed*self.Distance*x*cos(gamma)/(2*sbar**2))
-
-
-        ExactLineR = lambda x, gamma:  Coeff(0,x,gamma)*(1 + .5*exp(-s**2*(wi-wj)**2/(4*speed**2))*cos(wbar*x + (PhiTheta - 2*pi)*wi/wtheta + wi*diR(0,gamma)/speed - wj*djR(0,gamma)/speed - ( - 2*pi + (PhiTheta + (diR(0,gamma)-djR(0,gamma))/speed*wtheta)%(2*pi))*wj/wtheta  )  )
-        #ExactLineL = lambda x, gamma:  Coeff(x,gamma)*(1 + .5*exp(-s**2*(wi-wj)**2/(4*speed**2))*cos(wbar*x - (PhiTheta - 2*pi)*wj/wtheta + wi*diL(0,gamma)/speed - wj*djL(0,gamma)/speed + ( - 2*pi + (PhiTheta - (diL(0,gamma)-djL(0,gamma))/speed*wtheta)%(2*pi))*wi/wtheta  )  )
-        
-        ExactLineRight = lambda x: ExactLineR(x,0)
-        #ExactLineLeft = lambda x: ExactLineL(x,pi)
-        #TotalCorr = lambda x: ExactLineRight(x) + ExactLineLeft(x)
-        
-        ArrayExactRight=[ExactLineRight(x) for x in arange(-Lag,Lag+dt,dt)]
-        #ArrayExactLeft=[ExactLineLeft(x) for x in arange(-LagRadius/1000,LagRadius/1000 +.001,.001)]
-
-        plt.figure(figsize=(15,10))
-        plt.plot(arange(-Lag,Lag+dt,dt),array(ArrayExactRight),lw=2,c=sns.xkcd_rgb["blood orange"],zorder=2)
-        
-        
-        
-        ########## SIMULATED CORRELATION ##########
-        
-        #For simulated correlation, it is necessary to work with integrers; hence, we change time units so dt is integrer, and then return to seconds at the end:
-        def number_of_decimals(x):  
-            count = 0  
-            residue = x -int(x)  
-            if residue != 0:  
-                multiplier = 1  
-                while not (x*multiplier).is_integer():  
-                    count += 1  
-                    multiplier = 10 * multiplier  
-                return count
-        k=number_of_decimals(dt)
-    
-        Lag=Lag*(10**k)
-        dt=dt*(10**k)      
-        
-        
-        SpikeIndex1=self.SpikeIndex1()
-        SpikeIndex2=self.SpikeIndex2()
-        
-        print(' ')        
-        print('Number of steps is:', size(self.Path))
-        print(' ')
-        print('The distance between place fields centers is:', str(self.Distance))
-        print('Number of Spikes from cell 1 with radius', str(self.Ri),'and frequency', str(self.Omegai), 'is', size(SpikeIndex1))
-        print('Number of Spikes from cell 2 with radius', str(self.Rj),'and frequency', str(self.Omegaj),'is', size(SpikeIndex2))
-        print('Value of sigma 1 is', str(self.si))
-        print('Value of sigma 2 is', str(self.sj))
-        
-        #Normalization
-        NumberRuns=(self.Length/(self.Speed*self.Time))
-        N=NumberRuns/(self.dt)                # Normalization of the correlation
-        
-        #Correlation and plot
-        Corr=[size(list(set(SpikeIndex1).intersection(SpikeIndex2+i)))*N for i in arange(-Lag/dt,(Lag+dt)/dt,1)]        #Calculate Correlation by counting coincidences. The interval is -+Lag/dt because we add time steps, not time directly.
-        #CorrConv=Corr
-        CorrConv=scipy.ndimage.gaussian_filter(Corr, sigma=1)           #Smoothed simulated correlation
-        plt.plot(arange(-Lag/10**k,(Lag+dt)/10**k,dt/10**k),CorrConv,c=sns.xkcd_rgb["taupe"],zorder=1)                              #Plot the correlation. For that we have to consider that now the interval length is 2*Lag+dt, and we had (2*Lag+dt)/dt legth with spacing dt. So, by cross multiplication, the new spacing is dt' = dt*(2*Lag+dt)/((2*Lag+dt)/dt) = dt*dt
-        #plt.plot(arange(-round(Lag/dt)*dt/10**k,round((Lag+dt)/dt)*dt/10**k,dt/10**k),CorrConv,c=sns.xkcd_rgb["taupe"],zorder=1)                              #Plot the correlation. For that we have to consider that now the interval length is 2*Lag+dt, and we had (2*Lag+dt)/dt legth with spacing dt. So, by cross multiplication, the new spacing is dt' = dt*(2*Lag+dt)/((2*Lag+dt)/dt) = dt*dt
-
-        # IMPORTANT REMARK 1: Why do we make the plot with steps dt**2?
-        # We are plotting between -Lag and +Lag. But we add steps, not time, so  interval is given between -Lag/dt and +Lag/t (in steps of 1, because each time step is already dt in time)
-        # When we plot, we plot in time, so the interval is -Lag to +Lag in steps dt.        
-        #
-        # IMPORTANT REMARK 2: Why do we use round and int?
-        # Recall that we have an arange with limits Lag/dt. We need integrer numbers, and this can be float.
-        # Hence, we apply round to make it integrer. But, we can have the problem that 
-        
-        print(' ')
-        print('The analytical firing rate average is:', str(mean(ArrayExactRight)), 'The simulated firing rate average is', str(mean(Corr)),'.',' The corresponding ratio is:',str(mean(ArrayExactRight)/mean(Corr)))
-
-        
-################################################################################################################################################################
-################################################################################################################################################################
-################################################################################################################################################################
+  
