@@ -21,10 +21,8 @@ Anatomically inspired ideas are proposed to extend our model, such as considerin
 
 Levi Guerra García (26 y/o). Physicist (M.Sc.) passionate about Machine Learning, Data Analysis and Neuroscience. Further information about myself [here](https://www.linkedin.com/in/leviguerra/).
 
-For any suggestion regarding the content of the portfolio, or for a collaboration proposal, please do not hesistate to send me an email: leviguerra.g@gmail.com
+For any suggestion regarding my master thesis, or for a collaboration proposal, please do not hesistate to send me an email: leviguerra.g@gmail.com
 
 ------
 
-*Note: I am working to present the content as clear as possible. However, due to the background needed and the highly specific content, the code might be quite tough to fully understand without being familiar with the thesis. If the abstract is not clear enough, please, check the thesis itself for further details (link above) or contact me.
-
-Any question
+*Note: I am working to present the content as clear as possible. However, due to the background needed and the highly specific content, the code might be quite tough to fully understand without being familiar with the thesis. If the abstract is not clear enough, please, check the thesis itself for further details (link above) or contact me; I will be glad to help you!
