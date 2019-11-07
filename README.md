@@ -1,5 +1,5 @@
 # Master-Thesis
-In this repository you can find all the code used in the simulations and modelling of behind master thesis "Explaining Grid Cell Activity in One Spatial Dimension by Hippocampal Activity Correlations" (click [here](https://www.researchgate.net/publication/330738714_Master_Thesis_Explaining_Grid_Cell_Activity_in_One_Spatial_Dimension_by_Hippocampal_Activity_Correlations) to access the thesis).
+In this repository you can find all the code used in the simulations and modelling behind the master thesis "Explaining Grid Cell Activity in One Spatial Dimension by Hippocampal Activity Correlations" (click [here](https://www.researchgate.net/publication/330738714_Master_Thesis_Explaining_Grid_Cell_Activity_in_One_Spatial_Dimension_by_Hippocampal_Activity_Correlations) to access the thesis).
 
 Four different parts have been included:
 1. [Plot of the Correlation between Place Cells and comparison with numerical results (simulations).](https://github.com/LeviGuerra/Master-Thesis/blob/master/Code/1-Correlation.py)
